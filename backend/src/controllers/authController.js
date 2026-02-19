@@ -1,6 +1,7 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import db from "../config/db.js";
+import { logAudit } from "../services/audit.service.js";
 
 export const registerUser = async (req, res) => {
   const { name, email, password, role } = req.body;
@@ -18,12 +19,15 @@ export const registerUser = async (req, res) => {
 export const loginUser = async (req, res) => {
   const { email, password } = req.body;
 
-  const [users] = await db.query(
-    "SELECT * FROM users WHERE email = ?",
-    [email]
-  );
-
   if (users.length === 0) {
+    // Failed login attempt
+    await logAudit({
+      userId: null,
+      role: "UNKNOWN",
+      action: "FAILED_LOGIN",
+      details: `Attempt with ${email}`,
+      ip: req.ip,
+    });
     return res.status(401).json({ message: "Invalid credentials" });
   }
 
@@ -31,6 +35,14 @@ export const loginUser = async (req, res) => {
   const isMatch = await bcrypt.compare(password, user.password);
 
   if (!isMatch) {
+    // Failed login attempt
+    await logAudit({
+      userId: null,
+      role: "UNKNOWN",
+      action: "FAILED_LOGIN",
+      details: `Attempt with ${email}`,
+      ip: req.ip,
+    });
     return res.status(401).json({ message: "Invalid credentials" });
   }
 
@@ -39,6 +51,15 @@ export const loginUser = async (req, res) => {
     process.env.JWT_SECRET,
     { expiresIn: "1d" }
   );
+
+  // Login success
+  await logAudit({
+    userId: user.id,
+    role: user.role,
+    action: "LOGIN",
+    details: "User logged in",
+    ip: req.ip,
+  });
 
   res.json({ token, role: user.role });
 };

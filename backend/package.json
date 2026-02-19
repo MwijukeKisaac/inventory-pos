@@ -13,13 +13,18 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "africastalking": "^0.7.8",
+    "axios": "^1.13.4",
     "bcryptjs": "^3.0.3",
+    "body-parser": "^2.2.2",
     "cors": "^2.8.6",
     "dotenv": "^17.2.3",
     "express": "^5.2.1",
     "fs": "^0.0.1-security",
     "jsonwebtoken": "^9.0.3",
     "mysql2": "^3.16.2",
+    "node-cron": "^4.2.1",
+    "nodemailer": "^7.0.13",
     "path": "^0.12.7",
     "pdfkit": "^0.17.2",
     "qrcode": "^1.5.4"

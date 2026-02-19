@@ -11,6 +11,9 @@ import receiptRoutes from "./routes/receiptRoutes.js";
 import reportRoutes from "./routes/reportRoutes.js";
 
 dotenv.config();
+require("./cron/salesSummaryJob");
+const whatsappRoute = require("./routes/whatsapp");
+app.use("/whatsapp", whatsappRoute);
 
 const app = express();
 
@@ -39,6 +42,8 @@ app.use("/api/payments", paymentRoutes);
 app.use("/api/receipts", receiptRoutes);
 app.use("/api/menu", menuRoutes);
 app.use("/api/reports", reportRoutes);
+app.use("/api/alerts", alertsRoutes);
+app.use("/api/audit-logs", auditRoutes);
 
 /* ===============================
    HEALTH CHECK

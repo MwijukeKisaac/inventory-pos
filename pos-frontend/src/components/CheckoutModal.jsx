@@ -1,16 +1,18 @@
 import { useState } from "react";
 
 export default function CheckoutModal({ cart, onClose, onSuccess }) {
-  const [paymentMethod, setPaymentMethod] = useState("CASH");
+  const [method, setMethod] = useState("MTN");
+  const [phone, setPhone] = useState("");
   const total = cart.reduce((sum, i) => sum + Number(i.price), 0);
 
-  const handleCheckout = async () => {
+  const pay = async () => {
     const response = await fetch("http://localhost:5000/api/orders", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         items: cart,
-        paymentMethod
+        paymentMethod: method,
+        phone
       })
     });
 
@@ -34,16 +36,18 @@ export default function CheckoutModal({ cart, onClose, onSuccess }) {
           Total: UGX {total}
         </p>
 
-        <label className="block mb-2">Payment Method</label>
-        <select
-          className="border p-2 w-full mb-4"
-          value={paymentMethod}
-          onChange={e => setPaymentMethod(e.target.value)}
-        >
-          <option value="CASH">Cash</option>
-          <option value="MTN_MOMO">MTN Mobile Money</option>
-          <option value="AIRTEL_MOMO">Airtel Money</option>
+        <select className="border p-2 w-full mb-4" onChange={e => setMethod(e.target.value)}>
+          <option value="MTN">MTN MoMo</option>
+          <option value="AIRTEL">Airtel Money</option>
         </select>
+
+        <input
+          className="border p-2 w-full mb-4"
+          placeholder="2567XXXXXXXX"
+          onChange={e => setPhone(e.target.value)}
+        />
+
+        <button className="px-4 py-2 bg-green-600 text-white rounded w-full mb-4" onClick={pay}>Pay UGX {total}</button>
 
         <div className="flex justify-between">
           <button
@@ -51,13 +55,6 @@ export default function CheckoutModal({ cart, onClose, onSuccess }) {
             className="px-4 py-2 border rounded"
           >
             Cancel
-          </button>
-
-          <button
-            onClick={handleCheckout}
-            className="px-4 py-2 bg-green-600 text-white rounded"
-          >
-            Confirm Payment
           </button>
         </div>
       </div>

@@ -5,7 +5,10 @@ import { checkRole } from "../middleware/roleMiddleware.js";
 
 const router = express.Router();
 
-router.post("/", verifyToken, checkRole([1, 2]), addProduct); // Owner & Manager
+// Get all products
 router.get("/", verifyToken, getProducts);
+
+// Add new product (Owner & Manager only)
+router.post("/", verifyToken, checkRole([1, 2]), addProduct);
 
 export default router;

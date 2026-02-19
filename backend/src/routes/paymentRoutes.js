@@ -13,3 +13,21 @@ router.post(
 );
 
 export default router;
+router.post("/pay", async (req, res) => {
+  const { method, phone, amount, orderId } = req.body;
+
+  let reference;
+
+  if (method === "MTN") {
+    reference = await requestMtnPayment(phone, amount);
+  } else if (method === "AIRTEL") {
+    reference = await requestAirtelPayment(phone, amount);
+  }
+
+  await db.query(
+    "INSERT INTO payments(order_id, method, reference, status) VALUES (?,?,?,?)",
+    [orderId, method, reference, "PENDING"]
+  );
+
+  res.json({ message: "Payment request sent", reference });
+});
