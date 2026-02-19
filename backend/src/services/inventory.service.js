@@ -1,22 +1,4 @@
 import db from "../config/db.js";
-
-export async function checkLowStock() {
-  const [products] = await db.query(`
-    SELECT id, name, quantity, reorder_level
-    FROM products
-    WHERE quantity <= reorder_level
-  `);
-
-  for (let p of products) {
-    await db.query(
-      "INSERT INTO stock_alerts (product_id, quantity) VALUES (?, ?)",
-      [p.id, p.quantity]
-    );
-  }
-
-  return products;
-}
-import db from "../config/db.js";
 import { sendLowStockAlerts } from "./alert.service.js";
 
 export async function checkLowStock() {
@@ -37,7 +19,8 @@ export async function checkLowStock() {
     await sendLowStockAlerts(product);
   }
 }
-exports.checkStock = async (productName) => {
+
+export async function checkStock(productName) {
   if (productName.toLowerCase() === "rice") {
     return {
       name: "Rice",
@@ -46,4 +29,4 @@ exports.checkStock = async (productName) => {
     };
   }
   return null;
-};
+}

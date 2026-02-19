@@ -45,8 +45,8 @@ Reorder Level: ${product.reorder_level}`;
     console.error("Alert sending failed:", error.message);
   }
 }
+
 import { sendWhatsAppAlert } from "./whatsapp.service.js";
-import { sendLowStockAlerts } from "./alert.service.js";
 
 export async function sendAllAlerts(product) {
   const message = `🚨 LOW STOCK ALERT

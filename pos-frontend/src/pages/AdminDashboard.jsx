@@ -3,7 +3,7 @@ import {
   LineChart, Line, XAxis, YAxis,
   Tooltip, CartesianGrid, BarChart, Bar, ResponsiveContainer
 } from "recharts";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent } from "../components/ui/card";
 import api from "../services/api";
 
 export default function AdminDashboard() {

@@ -1,4 +1,4 @@
-import QRCode from "qrcode.react";
+import { QRCodeCanvas } from "qrcode.react";
 
 export default function ReceiptPreview({ receipt, onClose }) {
   const verifyUrl = `http://localhost:5000/api/receipts/verify/${receipt.receiptNumber}`;
@@ -18,7 +18,7 @@ export default function ReceiptPreview({ receipt, onClose }) {
         </p>
 
         <div className="flex justify-center mb-4">
-          <QRCode value={verifyUrl} size={160} />
+          <QRCodeCanvas value={verifyUrl} size={160} />
         </div>
 
         <p className="text-xs text-center mb-4">

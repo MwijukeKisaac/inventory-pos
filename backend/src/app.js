@@ -9,11 +9,11 @@ import menuRoutes from "./routes/menuRoutes.js";
 import customerOrderRoutes from "./routes/customerOrderRoutes.js";
 import receiptRoutes from "./routes/receiptRoutes.js";
 import reportRoutes from "./routes/reportRoutes.js";
+import alertsRoutes from "./routes/alerts.routes.js";
+import auditRoutes from "./routes/audit.routes.js";
+import whatsappRoute from "./routes/whatsapp.js";
 
 dotenv.config();
-require("./cron/salesSummaryJob");
-const whatsappRoute = require("./routes/whatsapp");
-app.use("/whatsapp", whatsappRoute);
 
 const app = express();
 
@@ -31,6 +31,7 @@ app.use(cors({
 app.use(express.json());
 app.use("/api/menu", menuRoutes);
 app.use("/api/customer-orders", customerOrderRoutes);
+app.use("/whatsapp", whatsappRoute);
 
 
 /* ===============================
@@ -40,7 +41,6 @@ app.use("/api/auth", authRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/payments", paymentRoutes);
 app.use("/api/receipts", receiptRoutes);
-app.use("/api/menu", menuRoutes);
 app.use("/api/reports", reportRoutes);
 app.use("/api/alerts", alertsRoutes);
 app.use("/api/audit-logs", auditRoutes);

@@ -1,4 +1,5 @@
 import twilio from "twilio";
+import axios from "axios";
 
 const client = twilio(
   process.env.TWILIO_ACCOUNT_SID,
@@ -18,9 +19,8 @@ export async function sendWhatsAppAlert(message) {
     console.error("WhatsApp alert failed:", error.message);
   }
 }
-const axios = require("axios");
 
-exports.sendWhatsAppMessage = async (phone, message) => {
+export async function sendWhatsAppMessage(phone, message) {
   const url = `https://graph.facebook.com/v19.0/${process.env.PHONE_NUMBER_ID}/messages`;
 
   await axios.post(
@@ -38,4 +38,4 @@ exports.sendWhatsAppMessage = async (phone, message) => {
       },
     }
   );
-};
+}

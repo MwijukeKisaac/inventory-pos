@@ -1,7 +1,8 @@
-const express = require("express");
+import express from "express";
+import { sendWhatsAppMessage } from "../services/whatsapp.service.js";
+import { checkStock } from "../services/inventory.service.js";
+
 const router = express.Router();
-const { sendWhatsAppMessage } = require("../services/whatsappService");
-const { checkStock } = require("../services/inventoryService");
 
 router.post("/webhook", async (req, res) => {
   const msg = req.body.entry?.[0]?.changes?.[0]?.value?.messages?.[0];
@@ -28,4 +29,4 @@ router.post("/webhook", async (req, res) => {
   res.sendStatus(200);
 });
 
-module.exports = router;
+export default router;
